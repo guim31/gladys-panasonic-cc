@@ -1,67 +1,113 @@
-# Template de démonstration
+# Panasonic Comfort Cloud
 
-Ceci est la documentation utilisateur de l'intégration. Gladys ré-héberge ce
-fichier et affiche un lien **Documentation** permanent vers lui dans l'écran
-de configuration (dans la langue de l'utilisateur, avec l'anglais en repli) —
-c'est au moment de configurer que l'utilisateur en a le plus besoin. Gardez
-les courtes indications d'accueil dans les blocs `section` du `config_schema`
-du manifest ; mettez ici le pas-à-pas détaillé (captures d'écran, dépannage…).
+Pilotez vos climatiseurs et pompes à chaleur air/air Panasonic depuis Gladys, par le cloud Panasonic Comfort Cloud : marche/arrêt, mode, consigne, vitesse de ventilation, volets, modes Powerful et silencieux, nanoe, ECONAVI et AI Eco, températures intérieure et extérieure, et énergie consommée.
 
-## Ce que vous obtenez
+> Developed without the hardware: feedback welcome. Cette intégration a été écrite et testée sur des réponses enregistrées de l'API Comfort Cloud et du client open source de référence, pas sur un vrai compte ni un vrai climatiseur. Dites ce qui marche et ce qui ne marche pas sur [GitHub](https://github.com/guim31/gladys-panasonic-cc/issues).
 
-Six appareils de démonstration apparaissent après l'installation : une
-station météo (vraies données Open-Meteo), un interrupteur, une lampe
-variable, une prise connectée avec mesure de puissance, un détecteur de
-mouvement et une caméra.
+Cette intégration n'est pas affiliée à Panasonic.
 
-## Configuration
+## Matériel compatible
 
-1. Ouvrez l'onglet **Configuration** de l'intégration.
-2. Renseignez la **latitude** et la **longitude** que la station météo de
-   démonstration doit observer (Paris par défaut), et choisissez votre unité
-   de température. L'**intervalle de rafraîchissement** règle la fréquence
-   de lecture de la station météo et de la puissance de la prise : toutes
-   les 5 minutes par défaut, toutes les minutes au plus.
-3. Enregistrez : les appareils apparaissent dans l'onglet **Découverte**,
-   prêts à être ajoutés.
+Tout **climatiseur ou pompe à chaleur air/air** Panasonic (Etherea, TZ, Z, gainables, cassettes...) configuré dans l'application **Panasonic Comfort Cloud**, avec son adaptateur Wi-Fi (intégré, ou CZ-TACG1 / CZ-CAPWFC1). Chaque unité intérieure devient un appareil Gladys.
 
-Le réglage **Préférer la connexion locale** pilote la prise de
-démonstration : elle affiche en badge le canal réellement utilisé (local ou
-cloud), avec un point orange quand elle fonctionne en mode dégradé (local
-refusé, bascule cloud).
+Non pris en charge : les pompes à chaleur air/eau Aquarea et les ballons d'eau chaude, même s'ils apparaissent dans la même application (la recherche les compte comme « non pris en charge »).
 
-## Actions
+## Prérequis
 
-- **Tester le fournisseur météo** — effectue une requête en direct vers
-  Open-Meteo et affiche la température et l'humidité actuelles sous le
-  bouton.
-- **Identifier un appareil** — choisissez un de vos appareils dans la liste
-  et il se signale (la lampe de démonstration « clignote » dans les logs).
+- Gladys **5.2.0** ou plus récent.
+- Un **Panasonic ID** (e-mail et mot de passe) avec les unités dans son application Comfort Cloud.
+- Un accès Internet pour Gladys : tout passe par le cloud Panasonic, rien n'est local.
+- Si votre compte utilise la double authentification, votre application d'authentification sous la main pour la première connexion.
 
-## Scènes
+## Installation et configuration
 
-L'intégration ajoute ses propres cartes à l'éditeur de scènes (Gladys 5.1
-ou plus récent), dans la catégorie **Intégrations** :
+1. Dans Gladys, ouvrez **Intégrations → Installer depuis GitHub** et saisissez `https://github.com/guim31/gladys-panasonic-cc`.
+2. Ouvrez l'onglet **Configuration** de l'intégration. Les réglages :
+   - **Panasonic ID (e-mail)** et **Mot de passe** : ceux de l'application Comfort Cloud. Astuce : Panasonic permet de partager les unités avec un second compte dans l'application ; un compte dédié à Gladys sépare ses sessions des vôtres.
+   - **Intervalle d'actualisation** : fréquence de lecture de chaque unité (2 minutes par défaut, comme l'intégration Home Assistant).
+   - **Langue des noms des fonctionnalités** : langue des noms des fonctionnalités des nouveaux appareils (français par défaut). Les appareils gardent les noms donnés dans l'application.
+   - **Avancé**, **Version de l'application Comfort Cloud** : laissez vide. Panasonic ne répond qu'aux versions récentes de son application ; l'intégration lit seule la version actuelle sur Google Play. Ne la remplissez que si l'état de connexion dit que la version est refusée.
+3. Ouvrez l'onglet **Découverte** : chaque unité intérieure du compte apparaît sous son nom dans l'application. Ajoutez celles que vous voulez à Gladys.
 
-- **Mouvement détecté** (déclencheur) — lance la scène quand un détecteur
-  de démonstration voit bouger quelque chose. Choisissez éventuellement le
-  détecteur et ce qui a bougé (personne, animal) ; laissés vides, toute
-  détection correspond. Les actions suivantes peuvent lire ce qui a bougé
-  avec `{{triggerEvent.data.target}}`.
-- **Identifier un appareil** (action) — fait se signaler l'appareil choisi.
-  Elle indique si l'appareil a pu se signaler, pour que les actions
-  suivantes puissent en dépendre.
+Le bouton **Rechercher les climatiseurs** (onglet Configuration) relit le compte et liste chaque unité, son modèle et si elle répond.
 
-## Tableau de bord
+### Double authentification
 
-Ajoutez le widget **État de la démo** à un tableau de bord : il affiche en
-direct la température de la station météo et la puissance de la prise du
-bureau, la connexion utilisée par la prise (en orange si dégradée) et la
-position observée. Son bouton **Identifier la lampe** fait se signaler la
-lampe de démonstration.
+Si Panasonic demande un code, l'état de connexion le dit. Ouvrez l'application d'authentification, puis lancez **Se connecter avec un code 2FA** (onglet Configuration) avec le code à 6 chiffres affiché, dans les 30 secondes. La session est ensuite conservée dans Gladys : le code ne resservira que si Panasonic redemande une connexion.
+
+### Ce qui est conservé
+
+L'intégration garde dans son propre volume (`/data`, lisible par le seul conteneur) la session Comfort Cloud (jetons d'accès et de renouvellement), la version de l'application et le compteur d'énergie de chaque unité. Le mot de passe reste dans la configuration de Gladys et n'est envoyé à Panasonic que si la session ne peut pas être renouvelée. Ni le mot de passe ni les jetons ne sont jamais écrits dans les journaux.
+
+## Appareils et fonctionnalités
+
+Chaque unité intérieure est un appareil Gladys. Ses fonctionnalités dépendent de ce que l'unité annonce :
+
+| Fonctionnalité                                 | Ce qu'elle fait                                                                                                                                               |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Marche/arrêt**                               | Allume ou éteint l'unité.                                                                                                                                     |
+| **Mode**                                       | Auto, Froid, Chaud, Déshumidification, Ventilation (seulement les modes de l'unité). Choisir un mode allume l'unité.                                          |
+| **Température de consigne**                    | La consigne, au demi-degré, de 16 à 30 °C (dès 8 °C sur les unités qui ont le hors-gel 8/15 °C).                                                              |
+| **Vitesse de ventilation**                     | Auto, Faible, Faible-Moyen, Moyen, Moyen-Fort, Fort.                                                                                                          |
+| **Balayage vertical**, **Balayage horizontal** | Balayage (« Auto » chez Panasonic), ou l'une de cinq positions fixes ; l'horizontal seulement sur les unités à volet gauche/droite.                           |
+| **Température intérieure**                     | La température mesurée par l'unité intérieure.                                                                                                                |
+| **Température extérieure**                     | La température mesurée par l'unité extérieure, quand elle en donne une.                                                                                       |
+| **Mode Powerful**, **Mode silencieux**         | Les modes spéciaux de Panasonic ; ils s'excluent. Seulement sur les unités qui les ont.                                                                       |
+| **nanoe**, **ECONAVI**, **AI Eco**             | La purification d'air et les capteurs éco des unités qui les ont.                                                                                             |
+| **Énergie aujourd'hui**                        | Ce que l'unité a consommé aujourd'hui (kWh), d'après l'historique Comfort Cloud.                                                                              |
+| **Énergie consommée**                          | Un compteur (kWh) qui ne fait que monter, construit à partir de l'historique journalier, pour le suivi d'énergie de Gladys. Il démarre avec le mois en cours. |
+
+Une consigne, une position de volet ou un mode spécial demandé quand l'unité est **éteinte** ne l'allume pas : il est affiché tout de suite, gardé, et envoyé au prochain allumage (comme le client de référence sans allumage automatique). Une scène qui prépare la consigne de la nuit ne démarre donc jamais l'unité par surprise. La vitesse de ventilation, nanoe, ECONAVI et AI Eco partent tout de suite.
+
+Les changements faits à la télécommande ou dans l'application sont repris à la lecture suivante.
+
+## Widget
+
+Le widget **Climatiseur** (choisissez l'unité dans ses réglages) montre la température de la pièce, la consigne et la température extérieure (ou l'énergie du jour), puis le mode, la vitesse de ventilation, le mode spécial et l'énergie du jour. Ses boutons :
+
+- **Allumer** / **Éteindre** ;
+- **−0,5 °C** et **+0,5 °C** ;
+- **Mode et ventilation** : un petit formulaire pour choisir ensemble le mode, la ventilation et le mode spécial, envoyés en un seul appel ; l'unité est allumée.
+
+## Déclencheur de scène
+
+- **Connexion Panasonic requise** : Comfort Cloud n'accepte plus la session. La raison est disponible pour la scène dans une variable (`reason`) : `password` (mot de passe refusé), `two_factor` (un code est demandé) ou `terms` (nouvelles conditions d'utilisation à accepter dans l'application). Il se déclenche une fois par problème, pas à chaque tentative : pratique pour s'envoyer un message plutôt que de découvrir des jours plus tard que la clim ne répond plus.
+
+## Action de scène
+
+- **Appliquer un préréglage de clim** : allume l'unité avec son mode, sa consigne, sa ventilation et son mode spécial en **un seul** appel à Comfort Cloud, là où les actions standard de Gladys feraient un appel par fonctionnalité (plusieurs secondes chacun). Un champ vide garde le réglage actuel. La consigne accepte les demi-degrés (`22,5` ou `22.5`). La consigne appliquée est rendue à la scène.
+
+Éteindre l'unité, ou changer un seul réglage, passe par l'action standard « Contrôler un appareil » de Gladys.
+
+## Exemples de scènes
+
+- **Chauffer le salon avant le réveil** : à 6 h 30 en semaine, « Appliquer un préréglage de clim » en Chaud à 21 °C, ventilation Auto, mode spécial Normal.
+- **Rafraîchir la chambre en silence** : à 22 h, si la chambre dépasse 26 °C, « Appliquer un préréglage de clim » en Froid à 25 °C, ventilation Faible, mode spécial Silencieux.
+- **Personne à la maison** : quand la dernière personne part, éteindre tous les climatiseurs.
+- **Alerte de connexion** : sur « Connexion Panasonic requise », envoyer le message « Panasonic demande votre attention : {{triggerEvent.data.reason}} ».
+
+## Rafraîchissement et quotas
+
+- Panasonic ne publie pas de quota, mais Comfort Cloud est lent (une lecture prend quelques secondes) et freine les comptes qui l'appellent trop souvent. L'intégration fait donc **un appel à la fois**, ne lit que les unités ajoutées à Gladys, toutes les 2 minutes par défaut (le rythme de l'intégration Home Assistant), et l'historique d'énergie au plus toutes les 5 minutes.
+- L'intégration lit elle-même les unités ; le sondage de Gladys n'est qu'un repli.
+- Après une commande, l'unité est relue 3 secondes plus tard pour confirmer l'état.
+- Quand Comfort Cloud échoue, le rythme ralentit (jusqu'à 10 minutes) jusqu'à ce qu'il réponde de nouveau. Une unité que le cloud ne joint pas est lue un moment dans la dernière copie du cloud, puis marquée comme ne répondant plus.
+- La liste des unités est relue toutes les 30 minutes (unités nouvelles ou renommées).
+- Seules les valeurs qui changent sont envoyées à Gladys, plus un rappel toutes les 6 heures pour qu'une valeur stable ne paraisse jamais périmée.
 
 ## Dépannage
 
-L'intégration journalise tout ce qu'elle fait : consultez les logs de
-l'intégration depuis l'interface Gladys (ou `docker logs` sur l'hôte) avec
-`LOG_LEVEL=debug` pour le détail complet.
+- **« Panasonic refuse cette adresse e-mail ou ce mot de passe »** : vérifiez que vous pouvez vous connecter avec eux à l'application Comfort Cloud, puis corrigez-les dans la configuration. L'intégration ne réessaie jamais seule un mot de passe refusé (cela pourrait bloquer le compte) : enregistrer la configuration ou lancer **Rechercher les climatiseurs** réessaie.
+- **« Panasonic demande un code à deux facteurs »** : lancez **Se connecter avec un code 2FA** avec un code récent.
+- **« Panasonic a de nouvelles conditions d'utilisation »** : ouvrez l'application Comfort Cloud et acceptez-les ; l'intégration réessaie toutes les 30 minutes.
+- **« Comfort Cloud refuse la version d'application annoncée »** : cherchez la version de l'application Comfort Cloud dans son store et saisissez-la dans **Version de l'application Comfort Cloud**.
+- **Une unité ne répond pas** : vérifiez-la dans l'application ; l'adaptateur Wi-Fi a pu perdre sa connexion.
+- **Plus de détails** : passez la variable d'environnement `LOG_LEVEL` du conteneur à `debug`.
+
+## Limites
+
+- Developed without the hardware: feedback welcome sur [GitHub](https://github.com/guim31/gladys-panasonic-cc/issues).
+- Cloud seulement : pas de pilotage local, et l'intégration cesse de marcher si Panasonic change sa connexion ou son API, jusqu'à sa mise à jour.
+- Les valeurs d'énergie viennent de l'historique Comfort Cloud, en retard d'une heure environ ; les unités sans mesure d'énergie n'ont pas de fonctionnalités d'énergie.
+- Non gérés : le mode iAuto-X, le préréglage hors-gel 8/15 °C (la plage de consigne le permet), les programmations hebdomadaires, les zones des gainables, le nettoyage intérieur.
+- Les pompes à chaleur Aquarea et les ballons d'eau chaude ne sont pas pris en charge.

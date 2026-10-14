@@ -32,14 +32,28 @@ pushing.
 
 ```
 index.js                          SDK wiring only: handlers registered before connect()
-src/devices/index.js              registry of the device blueprints + dispatch helpers
-src/devices/<type>.js             one device type per file (buildDevice, onPoll, onSetValue...)
-src/scenes.js                     scene action handlers (manifest `scene_actions`)
-src/widgets.js                    dashboard widget handlers (manifest `widgets`)
+src/app.js                        registers every handler on the SDK (or its fake), returns the hub
+src/hub.js                        account, unit list, own polling timer, states, commands, trigger
+src/devices.js                    the Gladys device of a unit: features, names (4 languages), values, commands
+src/energy.js                     the energy counter built from the daily history
+src/panasonic/cloud.js            Comfort Cloud client: Auth0 login (PKCE, 2FA), tokens, signed API calls
+src/panasonic/status.js           reading the list, status and history; building the control parameters
+src/panasonic/html.js             hidden form fields and Guardian 2FA config of the Auth0 pages
+src/panasonic/http.js             fetch without redirects, cookie jar, errors without bodies
+src/panasonic/appversion.js       the app version from Google Play / AppBrain
+src/panasonic/constants.js        endpoints, application identity, API values
+src/store.js                      /data/panasonic-cc.json (session, per-unit flags and energy; mode 0600)
+src/problems.js                   repeated failures logged once, and their end once
+src/texts.js                      connection status and action reports (4 languages)
+src/scenes.js                     scene action `apply_preset`
+src/widgets.js                    widget `climate`
 src/config.js                     DEFAULT_CONFIG (mirrors the manifest defaults) + normalization
-src/weather.js                    example driver (Open-Meteo)
 gladys-assistant-integration.json manifest: name, config_schema, actions, image...
-docs/en.md, docs/fr.md            user documentation, re-hosted by Gladys (mandatory)
+docs/{en,fr,de,es}.md             user documentation, re-hosted by Gladys (same sections)
+scripts/probe.mjs                 read-only probe of the real login and account
+scripts/reference-vectors.py      runs aio-panasonic-comfort-cloud to produce the test vectors
+test/fixtures/reference-vectors.json  what the reference computes (keys, PKCE, statuses, requests)
+test/helpers/fakePanasonic.js     fake Auth0 login + Comfort Cloud API + units
 test/                             node --test, against the SDK's fake Gladys (integration-sdk/testing)
 .github/scripts/release.mjs       release helpers (manifest bump, changelog), tested in test/
 ```
@@ -70,8 +84,9 @@ test/                             node --test, against the SDK's fake Gladys (in
   `type: "provider"`: 5.1.0). `test/manifest.test.js` ties the manifest to the
   code (defaults, action, scene and widget handlers): change both sides
   together.
-- **User-facing text** is bilingual (English and French): action messages,
-  manifest texts, and `docs/en.md` / `docs/fr.md`, kept in sync.
+- **User-facing text** exists in English, French, German and Spanish: action
+  messages, manifest texts, feature names, widget contents, and
+  `docs/{en,fr,de,es}.md`, kept in sync (`test/i18n.test.js`).
 - **Style.** Prettier formats, ESLint catches mistakes. Comments explain why,
   in English. Tests never touch the network.
 
@@ -233,3 +248,52 @@ long, et sur un « Sie »/« Ihr… » de politesse en allemand. Le store exige 
 - Docs `en`, `fr`, `de`, `es` avec les mêmes sections.
 - Chauffe, ouverture, sécurité : ne rien rendre pilotable « comme un thermostat » ou par un assistant
   vocal quand une erreur serait dangereuse (leçon d'OctoPrint).
+
+## Panasonic Comfort Cloud : API et pièges (cette intégration)
+
+- **Référence** : `sockless-coding/aio-panasonic-comfort-cloud` (MIT), le client de `panasonic_cc` ; son
+  `panasonicauthentication.py` est la vérité du parcours de connexion. Quand la connexion casse, lancer
+  `node scripts/probe.mjs` (compte inventé, jusqu'au refus) et comparer étape par étape. Avis MIT dans
+  `THIRD_PARTY_NOTICES.md`, copié dans l'image.
+- **Vecteurs** : `scripts/reference-vectors.py` exécute la référence (`pip install
+aio-panasonic-comfort-cloud==2026.10.0`) et écrit `test/fixtures/reference-vectors.json` : clé
+  `x-cfc-api-key`, PKCE, extraction Guardian et champs cachés (BeautifulSoup), lecture des statuts, requêtes
+  de commande. Toute nouvelle lecture ou commande se vérifie ainsi, pas à l'œil. Le statut `real` est une vraie
+  réponse (`testdata.py` de la référence) ; la liste et l'historique du faux cloud sont reconstruits d'après les
+  champs que la référence lit.
+- **Connexion** (Auth0, client Android) : `authorize` → 302 vers la page de login (cookie `_csrf`) →
+  `usernamepassword/login` (JSON) → page avec formulaire caché `wa/wresult/wctx` → `login/callback` →
+  `authorize/resume` → 302 vers `panasonic-iot-cfc://…?code=` → `oauth/token` (PKCE) → `POST
+/auth/v2/login` sur accsmart pour le `clientId`. Les redirections se suivent à la main (`redirect:
+'manual'`), avec un pot à cookies : le `fetch` de Node ne garde pas les cookies.
+- **2FA** : deux pages possibles (champ `mfa_token`, ou widget Guardian `window.__g_config`). Le code TOTP ne
+  passe que par l'action `sign_in_code` (champ `string` : un `secret` d'action est impossible à remplir). Les
+  URL de `__g_config` sont des chaînes JavaScript : `\u0026` est décodé (la référence ne le fait pas).
+- **En-têtes de l'API** : `x-app-timestamp` en heure locale, `x-cfc-api-key` = SHA-256 de « Comfort Cloud » +
+  sel + ce timestamp lu comme UTC en ms + « Bearer » + jeton, avec « cfc » inséré après le 9e caractère.
+  `x-app-version` doit être récente (sinon 401 code 4106) : lue sur Google Play (AppBrain en repli), gardée 2
+  jours, relue sur 4106 ; un échec de lecture compte aussi pour 2 jours (sinon chaque appel relisait le store).
+  Réglage avancé `app_version` pour la forcer.
+- **Erreurs de compte** : mot de passe refusé et 2FA ne sont **jamais** réessayés seuls (blocage du compte) ;
+  4103 (conditions à accepter) et 4106 réessayés toutes les 30 min ; réseau : rythme ralenti jusqu'à 10 min.
+  Le déclencheur `sign_in_required` part une fois par problème (raison gardée dans `/data`).
+- **Sondage** : 2 min par défaut (rythme de `panasonic_cc`), un appel à la fois, seules les unités créées
+  dans Gladys, historique d'énergie toutes les 5 min (6 h pour une unité sans données), liste toutes les
+  30 min. Statut « live » (`/deviceStatus/{guid}`) et, après un échec, 10 lectures de la copie du cloud
+  (`/deviceStatus/now/{guid}`), comme la référence. Dans le chemin, `/` du guid devient `f`.
+- **Identifiant** : MD5 du `deviceGuid` (contient `+` et `/`), calculé par nous, jamais `deviceHashGuid`
+  (qui pourrait apparaître ou changer).
+- **Valeurs** : modes Panasonic Auto 0, Dry 1, Cool 2, Heat 3, Fan 4 (≠ Gladys) ; vitesses identiques à
+  Gladys 0–5 ; le balayage « Auto » d'un axe est un bit de `fanAutoMode` (Both 0, Disabled 1, UD 2, LR 3), pas
+  une position ; positions UD Up 0, UpMid 3, Mid 2, DownMid 4, Down 1 ; LR Left 1, LeftMid 5, Mid 2, RightMid
+  4, Right 0. 126 = pas de mesure, -255 = pas de consommation. Volet horizontal masqué si `airDirection` vaut 1
+  ou 3, ou pour les types 4, 5, 6, 8, 9, 10 (sauf type 7).
+- **Unité éteinte** : consigne, volets et mode Powerful/silencieux sont gardés et envoyés au prochain
+  allumage (comme la référence avec `auto_power_on=False`) ; un changement de mode allume (comme la
+  référence) ; ventilation, nanoe, ECONAVI, AI Eco partent tout de suite.
+- **Énergie** : l'historique ne donne qu'une consommation par jour (mode mois, `dataTime` AAAAMMJJ), en
+  retard ; `energy-sensor/index` est donc un compteur maison (max par jour, jours de plus de 62 jours repliés
+  dans une base) et `index-today` la consommation du jour. Au changement de mois, le mois précédent est relu
+  une fois.
+- **Session de code** : le proxy refuse `authglb.digital.panasonic.com`, `accsmart.panasonic.com` et
+  `play.google.com` ; PyPI passe (pour régénérer les vecteurs).

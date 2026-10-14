@@ -1,177 +1,587 @@
 {
   "manifest_version": 1,
   "type": "device",
-  "name": "Demo Devices Template",
+  "name": "Panasonic Comfort Cloud",
   "description": {
-    "en": "Starter template showing sensors, a switch, a dimmable light and a smart plug.",
-    "fr": "Template de démarrage : capteurs, interrupteur, lampe variable et prise connectée."
+    "en": "Panasonic air conditioners and heat pumps via Comfort Cloud: mode, setpoint, fan, swing, energy.",
+    "fr": "Climatiseurs et PAC Panasonic via Comfort Cloud : mode, consigne, ventilation, balayage, énergie.",
+    "de": "Panasonic-Klimageräte und Wärmepumpen über Comfort Cloud: Modus, Sollwert, Lüfter, Schwenk, Energie.",
+    "es": "Aires y bombas de calor Panasonic (Comfort Cloud): modo, consigna, ventilador, oscilación, energía."
   },
   "version": "1.0.0",
-  "docker_image": "ghcr.io/gladysassistant/integration-template-js:1.0.0",
-  "gladys_version": ">=5.1.0",
-  "cover_image": "https://raw.githubusercontent.com/GladysAssistant/integration-template-js/master/cover.png",
-  "categories": ["lighting", "security", "environment"],
-  "transports": ["local", "cloud"],
+  "docker_image": "ghcr.io/guim31/gladys-panasonic-cc:1.0.0",
+  "gladys_version": ">=5.2.0",
+  "cover_image": "https://raw.githubusercontent.com/guim31/gladys-panasonic-cc/main/cover.png",
+  "categories": ["climate"],
+  "transports": ["cloud"],
   "config_schema": [
     {
       "key": "intro",
       "type": "section",
-      "label": { "en": "Getting started", "fr": "Pour commencer" },
+      "label": {
+        "en": "Your Panasonic account",
+        "fr": "Votre compte Panasonic",
+        "de": "Dein Panasonic-Konto",
+        "es": "Su cuenta de Panasonic"
+      },
       "description": {
-        "en": "The demo weather station reads real data from the free Open-Meteo API: pick the coordinates to observe. No account, no API key.",
-        "fr": "La station météo de démonstration lit de vraies données via l'API gratuite Open-Meteo : choisissez les coordonnées à observer. Pas de compte, pas de clé d'API."
+        "en": "The air conditioners set up in the Panasonic Comfort Cloud app are found automatically: enter the e-mail address and password of the Panasonic ID you use in the app, then open the Discovery tab. Gladys talks to them through the Panasonic cloud.",
+        "fr": "Les climatiseurs configurés dans l'application Panasonic Comfort Cloud sont trouvés automatiquement : saisissez l'adresse e-mail et le mot de passe du Panasonic ID de l'application, puis ouvrez l'onglet Découverte. Gladys leur parle par le cloud Panasonic.",
+        "de": "Die in der App Panasonic Comfort Cloud eingerichteten Klimageräte werden automatisch gefunden: Gib die E-Mail-Adresse und das Passwort der Panasonic ID aus der App ein und öffne dann den Tab „Entdecken“. Gladys spricht über die Panasonic-Cloud mit ihnen.",
+        "es": "Los aires acondicionados configurados en la aplicación Panasonic Comfort Cloud se encuentran automáticamente: introduzca la dirección de correo y la contraseña del Panasonic ID de la aplicación y abra la pestaña Descubrir. Gladys se comunica con ellos a través de la nube de Panasonic."
       },
       "links": [
         {
-          "url": "https://open-meteo.com/en/docs",
-          "label": { "en": "Open-Meteo documentation", "fr": "Documentation Open-Meteo" }
+          "url": "https://github.com/guim31/gladys-panasonic-cc/blob/main/docs/en.md",
+          "label": {
+            "en": "Setup guide",
+            "fr": "Guide d'installation",
+            "de": "Installationsanleitung",
+            "es": "Guía de instalación"
+          }
         }
       ]
     },
     {
-      "key": "latitude",
-      "type": "number",
-      "label": { "en": "Latitude", "fr": "Latitude" },
-      "description": {
-        "en": "Latitude used for the demo weather sensor.",
-        "fr": "Latitude utilisée par le capteur météo de démonstration."
+      "key": "username",
+      "type": "string",
+      "label": {
+        "en": "Panasonic ID (e-mail)",
+        "fr": "Panasonic ID (e-mail)",
+        "de": "Panasonic ID (E-Mail)",
+        "es": "Panasonic ID (correo)"
       },
-      "placeholder": { "en": "e.g. 48.8566", "fr": "ex. 48.8566" },
+      "placeholder": {
+        "en": "e.g. name@example.com",
+        "fr": "ex. nom@example.com",
+        "de": "z. B. name@example.com",
+        "es": "p. ej. nombre@example.com"
+      },
       "required": true,
-      "default": 48.8566,
-      "min": -90,
-      "max": 90
+      "default": ""
     },
     {
-      "key": "longitude",
-      "type": "number",
-      "label": { "en": "Longitude", "fr": "Longitude" },
-      "description": {
-        "en": "Longitude used for the demo weather sensor.",
-        "fr": "Longitude utilisée par le capteur météo de démonstration."
+      "key": "password",
+      "type": "secret",
+      "label": {
+        "en": "Password",
+        "fr": "Mot de passe",
+        "de": "Passwort",
+        "es": "Contraseña"
       },
-      "placeholder": { "en": "e.g. 2.3522", "fr": "ex. 2.3522" },
-      "required": true,
-      "default": 2.3522,
-      "min": -180,
-      "max": 180
+      "required": true
     },
     {
-      "key": "unit",
+      "key": "poll_interval",
       "type": "select",
-      "label": { "en": "Temperature unit", "fr": "Unité de température" },
+      "label": {
+        "en": "Refresh interval",
+        "fr": "Intervalle d'actualisation",
+        "de": "Aktualisierungsintervall",
+        "es": "Intervalo de actualización"
+      },
+      "description": {
+        "en": "How often each air conditioner added to Gladys is read. Comfort Cloud is slow and limits the calls: 2 minutes is the pace of the Home Assistant integration.",
+        "fr": "Fréquence de lecture de chaque climatiseur ajouté à Gladys. Comfort Cloud est lent et limite les appels : 2 minutes est le rythme de l'intégration Home Assistant.",
+        "de": "Wie oft jedes zu Gladys hinzugefügte Klimagerät gelesen wird. Comfort Cloud ist langsam und begrenzt die Aufrufe: 2 Minuten ist der Takt der Home-Assistant-Integration.",
+        "es": "Frecuencia de lectura de cada aire acondicionado añadido a Gladys. Comfort Cloud es lento y limita las llamadas: 2 minutos es el ritmo de la integración de Home Assistant."
+      },
       "required": false,
-      "default": "celsius",
+      "default": "120",
       "options": [
-        { "value": "celsius", "label": { "en": "Celsius", "fr": "Celsius" } },
-        { "value": "fahrenheit", "label": { "en": "Fahrenheit", "fr": "Fahrenheit" } }
+        {
+          "value": "60",
+          "label": {
+            "en": "1 minute",
+            "fr": "1 minute",
+            "de": "1 Minute",
+            "es": "1 minuto"
+          }
+        },
+        {
+          "value": "120",
+          "label": {
+            "en": "2 minutes",
+            "fr": "2 minutes",
+            "de": "2 Minuten",
+            "es": "2 minutos"
+          }
+        },
+        {
+          "value": "300",
+          "label": {
+            "en": "5 minutes",
+            "fr": "5 minutes",
+            "de": "5 Minuten",
+            "es": "5 minutos"
+          }
+        },
+        {
+          "value": "600",
+          "label": {
+            "en": "10 minutes",
+            "fr": "10 minutes",
+            "de": "10 Minuten",
+            "es": "10 minutos"
+          }
+        }
       ]
     },
     {
-      "key": "poll_frequency",
-      "type": "number",
-      "label": { "en": "Refresh interval (s)", "fr": "Intervalle de rafraîchissement (s)" },
+      "key": "language",
+      "type": "select",
+      "label": {
+        "en": "Language of the feature names",
+        "fr": "Langue des noms des fonctionnalités",
+        "de": "Sprache der Funktionsnamen",
+        "es": "Idioma de los nombres de las funciones"
+      },
       "description": {
-        "en": "How often sensors are polled, in seconds (one minute minimum).",
-        "fr": "Fréquence d'interrogation des capteurs, en secondes (une minute minimum)."
+        "en": "Names given to the features of new devices (Mode, Fan speed...). The devices keep the names given in the Comfort Cloud app.",
+        "fr": "Noms donnés aux fonctionnalités des nouveaux appareils (Mode, Vitesse de ventilation...). Les appareils gardent les noms donnés dans l'application Comfort Cloud.",
+        "de": "Namen für die Funktionen neuer Geräte (Modus, Lüftergeschwindigkeit...). Die Geräte behalten die Namen aus der Comfort-Cloud-App.",
+        "es": "Nombres de las funciones de los nuevos dispositivos (Modo, Velocidad del ventilador...). Los dispositivos conservan los nombres de la aplicación Comfort Cloud."
       },
       "required": false,
-      "default": 300,
-      "min": 60,
-      "max": 3600
+      "default": "fr",
+      "options": [
+        {
+          "value": "en",
+          "label": {
+            "en": "English",
+            "fr": "Anglais",
+            "de": "Englisch",
+            "es": "Inglés"
+          }
+        },
+        {
+          "value": "fr",
+          "label": {
+            "en": "French",
+            "fr": "Français",
+            "de": "Französisch",
+            "es": "Francés"
+          }
+        },
+        {
+          "value": "de",
+          "label": {
+            "en": "German",
+            "fr": "Allemand",
+            "de": "Deutsch",
+            "es": "Alemán"
+          }
+        },
+        {
+          "value": "es",
+          "label": {
+            "en": "Spanish",
+            "fr": "Espagnol",
+            "de": "Spanisch",
+            "es": "Español"
+          }
+        }
+      ]
+    },
+    {
+      "key": "advanced",
+      "type": "section",
+      "label": {
+        "en": "Advanced",
+        "fr": "Avancé",
+        "de": "Erweitert",
+        "es": "Avanzado"
+      },
+      "description": {
+        "en": "Panasonic only answers recent versions of its app. The integration reads the current version from Google Play by itself; fill this in only if the connection status says the version is refused.",
+        "fr": "Panasonic ne répond qu'aux versions récentes de son application. L'intégration lit seule la version actuelle sur Google Play ; ne remplissez ceci que si l'état de connexion dit que la version est refusée.",
+        "de": "Panasonic antwortet nur aktuellen Versionen seiner App. Die Integration liest die aktuelle Version selbst aus Google Play; fülle dies nur aus, wenn der Verbindungsstatus meldet, dass die Version abgelehnt wird.",
+        "es": "Panasonic solo responde a las versiones recientes de su aplicación. La integración lee sola la versión actual en Google Play; rellene esto solo si el estado de conexión indica que la versión es rechazada."
+      }
+    },
+    {
+      "key": "app_version",
+      "type": "string",
+      "label": {
+        "en": "Comfort Cloud app version",
+        "fr": "Version de l'application Comfort Cloud",
+        "de": "Version der Comfort-Cloud-App",
+        "es": "Versión de la aplicación Comfort Cloud"
+      },
+      "placeholder": {
+        "en": "automatic (e.g. 1.22.4)",
+        "fr": "automatique (ex. 1.22.4)",
+        "de": "automatisch (z. B. 1.22.4)",
+        "es": "automática (p. ej. 1.22.4)"
+      },
+      "required": false,
+      "default": ""
     }
   ],
   "actions": [
     {
-      "key": "test_weather",
-      "label": { "en": "Test the weather provider", "fr": "Tester le fournisseur météo" },
-      "timeout_seconds": 30
+      "key": "refresh",
+      "label": {
+        "en": "Search for air conditioners",
+        "fr": "Rechercher les climatiseurs",
+        "de": "Klimageräte suchen",
+        "es": "Buscar aires acondicionados"
+      },
+      "timeout_seconds": 120
     },
     {
-      "key": "identify",
-      "label": { "en": "Identify a device", "fr": "Identifier un appareil" },
+      "key": "sign_in_code",
+      "label": {
+        "en": "Sign in with a 2FA code",
+        "fr": "Se connecter avec un code 2FA",
+        "de": "Mit 2FA-Code anmelden",
+        "es": "Iniciar sesión con un código 2FA"
+      },
+      "timeout_seconds": 60,
       "fields": [
         {
-          "key": "device",
-          "type": "select",
-          "source": "devices",
-          "label": { "en": "Device", "fr": "Appareil" },
-          "required": true
+          "key": "code",
+          "type": "string",
+          "required": true,
+          "label": {
+            "en": "Code of the authenticator app",
+            "fr": "Code de l'application d'authentification",
+            "de": "Code der Authenticator-App",
+            "es": "Código de la aplicación de autenticación"
+          },
+          "placeholder": {
+            "en": "e.g. 123456",
+            "fr": "ex. 123456",
+            "de": "z. B. 123456",
+            "es": "p. ej. 123456"
+          }
         }
       ]
     }
   ],
   "scene_triggers": [
     {
-      "key": "motion_detected",
-      "label": { "en": "Motion detected", "fr": "Mouvement détecté" },
+      "key": "sign_in_required",
+      "label": {
+        "en": "Panasonic sign-in needed",
+        "fr": "Connexion Panasonic requise",
+        "de": "Panasonic-Anmeldung nötig",
+        "es": "Inicio de sesión Panasonic necesario"
+      },
       "description": {
-        "en": "A demo motion sensor saw a person or an animal move.",
-        "fr": "Un détecteur de démonstration a vu bouger une personne ou un animal."
+        "en": "Comfort Cloud no longer accepts the session: password refused, two-factor code or new terms to accept.",
+        "fr": "Comfort Cloud n'accepte plus la session : mot de passe refusé, code à deux facteurs ou nouvelles conditions à accepter.",
+        "de": "Comfort Cloud akzeptiert die Sitzung nicht mehr: Passwort abgelehnt, Zwei-Faktor-Code oder neue Bedingungen zu akzeptieren.",
+        "es": "Comfort Cloud ya no acepta la sesión: contraseña rechazada, código de doble factor o nuevas condiciones por aceptar."
       },
       "fields": [
         {
-          "key": "device",
-          "type": "select",
-          "source": "devices",
-          "label": { "en": "Sensor", "fr": "Détecteur" }
-        },
-        {
-          "key": "target",
+          "key": "reason",
           "type": "multi_select",
-          "label": { "en": "What moved", "fr": "Ce qui a bougé" },
+          "label": {
+            "en": "Reason",
+            "fr": "Raison",
+            "de": "Grund",
+            "es": "Motivo"
+          },
           "options": [
-            { "value": "person", "label": { "en": "Person", "fr": "Personne" } },
-            { "value": "animal", "label": { "en": "Animal", "fr": "Animal" } }
+            {
+              "value": "password",
+              "label": {
+                "en": "Password refused",
+                "fr": "Mot de passe refusé",
+                "de": "Passwort abgelehnt",
+                "es": "Contraseña rechazada"
+              }
+            },
+            {
+              "value": "two_factor",
+              "label": {
+                "en": "Two-factor code needed",
+                "fr": "Code à deux facteurs requis",
+                "de": "Zwei-Faktor-Code nötig",
+                "es": "Código de doble factor necesario"
+              }
+            },
+            {
+              "value": "terms",
+              "label": {
+                "en": "New terms to accept",
+                "fr": "Nouvelles conditions à accepter",
+                "de": "Neue Bedingungen zu akzeptieren",
+                "es": "Nuevas condiciones por aceptar"
+              }
+            }
           ]
         }
       ],
       "variables": [
         {
-          "key": "target",
+          "key": "reason",
           "type": "string",
-          "label": { "en": "What moved", "fr": "Ce qui a bougé" }
+          "label": {
+            "en": "Reason",
+            "fr": "Raison",
+            "de": "Grund",
+            "es": "Motivo"
+          }
         }
       ]
     }
   ],
   "scene_actions": [
     {
-      "key": "identify_device",
-      "label": { "en": "Identify a device", "fr": "Identifier un appareil" },
-      "description": {
-        "en": "Make a device signal itself (the demo light blinks).",
-        "fr": "Fait se signaler un appareil (la lampe de démonstration clignote)."
+      "key": "apply_preset",
+      "label": {
+        "en": "Apply an air conditioning preset",
+        "fr": "Appliquer un préréglage de clim",
+        "de": "Klima-Voreinstellung anwenden",
+        "es": "Aplicar un ajuste de climatización"
       },
-      "timeout_seconds": 15,
+      "description": {
+        "en": "Turns the unit on with its mode, setpoint, fan and special mode in a single Comfort Cloud call. An empty field keeps the current setting.",
+        "fr": "Allume le climatiseur avec son mode, sa consigne, sa ventilation et son mode spécial en un seul appel à Comfort Cloud. Un champ vide garde le réglage actuel.",
+        "de": "Schaltet das Gerät mit Modus, Sollwert, Lüfter und Sondermodus in einem einzigen Comfort-Cloud-Aufruf ein. Ein leeres Feld behält die aktuelle Einstellung.",
+        "es": "Enciende el equipo con su modo, consigna, ventilador y modo especial en una sola llamada a Comfort Cloud. Un campo vacío conserva el ajuste actual."
+      },
+      "timeout_seconds": 45,
       "fields": [
         {
           "key": "device",
           "type": "select",
           "source": "devices",
-          "label": { "en": "Device", "fr": "Appareil" },
-          "required": true
+          "required": true,
+          "label": {
+            "en": "Air conditioner",
+            "fr": "Climatiseur",
+            "de": "Klimaanlage",
+            "es": "Aire acondicionado"
+          }
+        },
+        {
+          "key": "mode",
+          "type": "select",
+          "label": {
+            "en": "Mode",
+            "fr": "Mode",
+            "de": "Modus",
+            "es": "Modo"
+          },
+          "options": [
+            {
+              "value": "0",
+              "label": {
+                "en": "Auto",
+                "fr": "Auto",
+                "de": "Automatisch",
+                "es": "Auto"
+              }
+            },
+            {
+              "value": "1",
+              "label": {
+                "en": "Cool",
+                "fr": "Froid",
+                "de": "Kühlen",
+                "es": "Frío"
+              }
+            },
+            {
+              "value": "2",
+              "label": {
+                "en": "Heat",
+                "fr": "Chaud",
+                "de": "Heizen",
+                "es": "Calor"
+              }
+            },
+            {
+              "value": "3",
+              "label": {
+                "en": "Dry",
+                "fr": "Déshumidification",
+                "de": "Entfeuchten",
+                "es": "Seco"
+              }
+            },
+            {
+              "value": "4",
+              "label": {
+                "en": "Fan",
+                "fr": "Ventilation",
+                "de": "Lüften",
+                "es": "Ventilador"
+              }
+            }
+          ]
+        },
+        {
+          "key": "target_temperature",
+          "type": "string",
+          "label": {
+            "en": "Setpoint (°C)",
+            "fr": "Consigne (°C)",
+            "de": "Sollwert (°C)",
+            "es": "Consigna (°C)"
+          },
+          "placeholder": {
+            "en": "e.g. 22.5",
+            "fr": "ex. 22,5",
+            "de": "z. B. 22,5",
+            "es": "p. ej. 22,5"
+          }
+        },
+        {
+          "key": "fan_speed",
+          "type": "select",
+          "label": {
+            "en": "Fan speed",
+            "fr": "Vitesse de ventilation",
+            "de": "Lüftergeschwindigkeit",
+            "es": "Velocidad del ventilador"
+          },
+          "options": [
+            {
+              "value": "0",
+              "label": {
+                "en": "Auto",
+                "fr": "Auto",
+                "de": "Automatisch",
+                "es": "Auto"
+              }
+            },
+            {
+              "value": "1",
+              "label": {
+                "en": "Low",
+                "fr": "Faible",
+                "de": "Niedrig",
+                "es": "Baja"
+              }
+            },
+            {
+              "value": "2",
+              "label": {
+                "en": "Low-Med",
+                "fr": "Faible-Moyen",
+                "de": "Niedrig-Mittel",
+                "es": "Baja-Media"
+              }
+            },
+            {
+              "value": "3",
+              "label": {
+                "en": "Medium",
+                "fr": "Moyen",
+                "de": "Mittel",
+                "es": "Media"
+              }
+            },
+            {
+              "value": "4",
+              "label": {
+                "en": "Med-High",
+                "fr": "Moyen-Fort",
+                "de": "Mittel-Hoch",
+                "es": "Media-Alta"
+              }
+            },
+            {
+              "value": "5",
+              "label": {
+                "en": "High",
+                "fr": "Fort",
+                "de": "Hoch",
+                "es": "Alta"
+              }
+            }
+          ]
+        },
+        {
+          "key": "special_mode",
+          "type": "select",
+          "label": {
+            "en": "Special mode",
+            "fr": "Mode spécial",
+            "de": "Sondermodus",
+            "es": "Modo especial"
+          },
+          "options": [
+            {
+              "value": "normal",
+              "label": {
+                "en": "Normal",
+                "fr": "Normal",
+                "de": "Normal",
+                "es": "Normal"
+              }
+            },
+            {
+              "value": "powerful",
+              "label": {
+                "en": "Powerful",
+                "fr": "Powerful",
+                "de": "Powerful",
+                "es": "Powerful"
+              }
+            },
+            {
+              "value": "quiet",
+              "label": {
+                "en": "Quiet",
+                "fr": "Silencieux",
+                "de": "Leise",
+                "es": "Silencioso"
+              }
+            }
+          ]
         }
       ],
       "outputs": [
         {
-          "key": "signalled",
-          "type": "boolean",
-          "label": { "en": "Device signalled", "fr": "Appareil signalé" }
+          "key": "target_temperature",
+          "type": "number",
+          "label": {
+            "en": "Setpoint applied (°C)",
+            "fr": "Consigne appliquée (°C)",
+            "de": "Übernommener Sollwert (°C)",
+            "es": "Consigna aplicada (°C)"
+          }
         }
       ]
     }
   ],
   "widgets": [
     {
-      "key": "demo_status",
-      "label": { "en": "Demo status", "fr": "État de la démo" },
-      "description": {
-        "en": "Live temperature and plug power, plug connection and observed location.",
-        "fr": "Température et puissance en direct, connexion de la prise, position observée."
+      "key": "climate",
+      "label": {
+        "en": "Air conditioner",
+        "fr": "Climatiseur",
+        "de": "Klimaanlage",
+        "es": "Aire acondicionado"
       },
-      "icon": "activity",
-      "action_timeout_seconds": 15
+      "description": {
+        "en": "Room, setpoint, outdoor; mode, fan, special mode, energy; on/off, setpoint and mode buttons.",
+        "fr": "Pièce, consigne, extérieur ; mode, ventilation, énergie ; boutons marche, consigne et mode.",
+        "de": "Raum, Sollwert, außen; Modus, Lüfter, Sondermodus, Energie; Tasten für Ein/Aus, Sollwert, Modus.",
+        "es": "Estancia, consigna, exterior; modo, ventilador, modo especial, energía; botones de encendido y modo."
+      },
+      "icon": "thermometer",
+      "settings": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "required": true,
+          "label": {
+            "en": "Air conditioner",
+            "fr": "Climatiseur",
+            "de": "Klimaanlage",
+            "es": "Aire acondicionado"
+          }
+        }
+      ],
+      "action_timeout_seconds": 45
     }
   ]
 }

@@ -7,10 +7,12 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { DEVICE_BLUEPRINTS, SCENE_TRIGGER_KEYS } from '../src/devices/index.js';
+import { TRIGGERS } from '../src/hub.js';
+import { ACTIONS } from '../src/app.js';
 import { SCENE_ACTIONS } from '../src/scenes.js';
 import { WIDGETS } from '../src/widgets.js';
 import { DEFAULT_CONFIG } from '../src/config.js';
+import { createWorld } from './helpers/world.js';
 
 const manifest = JSON.parse(
   await readFile(new URL('../gladys-assistant-integration.json', import.meta.url), 'utf8'),
@@ -29,14 +31,15 @@ const allFields = [
   ...(manifest.widgets ?? []).flatMap((widget) => widget.settings ?? []),
 ];
 
-// Actions registered outside the blueprints (see index.js).
-const REGISTRY_LEVEL_ACTIONS = ['identify'];
+const SCENE_TRIGGER_KEYS = Object.values(TRIGGERS);
 
 // Manifest fields older Gladys releases reject as unknown, with the first
 // release accepting them. The store validator refuses a manifest whose
 // `gladys_version` minimum is lower: these tests catch it before a release.
 const CAPABILITY_FIELDS = ['scene_triggers', 'scene_actions', 'widgets'];
 const CAPABILITY_MIN_GLADYS_VERSION = [5, 1, 0];
+// Widget buttons opening a form (GladysAssistant/Gladys#3168) ship in 5.2.0.
+const WIDGET_FORM_MIN_GLADYS_VERSION = [5, 2, 0];
 const CATEGORIES_MIN_GLADYS_VERSION = [4, 86, 0];
 
 const keysOf = (list) => (list ?? []).map((entry) => entry.key);
@@ -57,14 +60,45 @@ function isAtLeast(version, required) {
   return true;
 }
 
-test('every manifest action has a registered handler', () => {
-  const handled = new Set([
-    ...DEVICE_BLUEPRINTS.flatMap((bp) => Object.keys(bp.actions ?? {})),
-    ...REGISTRY_LEVEL_ACTIONS,
-  ]);
-  for (const action of manifest.actions ?? []) {
-    assert.ok(handled.has(action.key), `manifest action "${action.key}" has no handler`);
+test('every manifest action has a registered handler', async () => {
+  const world = await createWorld();
+  try {
+    assert.deepEqual(keysOf(manifest.actions).sort(), Object.values(ACTIONS).sort());
+    for (const action of manifest.actions ?? []) {
+      const ack = await world.fake.action(action.key, { code: '000000' });
+      assert.equal(ack.success, true, `manifest action "${action.key}": ${ack.error}`);
+    }
+  } finally {
+    await world.app.stop();
   }
+});
+
+test('an action field is never a secret (it could not be typed in, Gladys#3154)', () => {
+  for (const action of manifest.actions) {
+    for (const field of action.fields ?? []) {
+      assert.notEqual(field.type, 'secret', `${action.key}.${field.key}`);
+    }
+  }
+});
+
+test('the widget form buttons require Gladys >= 5.2.0', () => {
+  assert.ok(isAtLeast(minGladysVersion(), WIDGET_FORM_MIN_GLADYS_VERSION));
+});
+
+test('cloud only: Comfort Cloud is the only way to the units', () => {
+  assert.deepEqual(manifest.transports, ['cloud']);
+  assert.deepEqual(manifest.categories, ['climate']);
+  assert.equal(manifest.name, 'Panasonic Comfort Cloud');
+  assert.equal(manifest.type, 'device');
+  assert.equal(manifest.network_discovery, undefined);
+});
+
+test('the image is the one this repository publishes', () => {
+  assert.match(manifest.docker_image, /^ghcr\.io\/guim31\/gladys-panasonic-cc:\d+\.\d+\.\d+$/);
+  assert.equal(
+    manifest.cover_image,
+    'https://raw.githubusercontent.com/guim31/gladys-panasonic-cc/main/cover.png',
+  );
 });
 
 test('declaring catalog categories requires Gladys >= 4.86.0', () => {

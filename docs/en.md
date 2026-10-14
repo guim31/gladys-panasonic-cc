@@ -1,61 +1,113 @@
-# Demo Devices Template
+# Panasonic Comfort Cloud
 
-This is the user documentation of the integration. Gladys re-hosts this file
-and shows a permanent **Documentation** link to it in the Configuration screen
-(in the user's language, with English as the fallback) — it is when
-configuring that the user needs it most. Keep the short onboarding hints in
-the `section` blocks of the manifest `config_schema`; put the long
-step-by-step (screenshots, troubleshooting…) here.
+Control your Panasonic air conditioners and air-to-air heat pumps from Gladys, through the Panasonic Comfort Cloud: on/off, mode, setpoint, fan speed, louvers, Powerful and Quiet modes, nanoe, ECONAVI and AI Eco, indoor and outdoor temperature, and the energy consumed.
 
-## What you get
+> Developed without the hardware: feedback welcome. This integration was written and tested against recorded answers of the Comfort Cloud API and the reference open-source client, not against a real account or unit. Please report what works and what does not on [GitHub](https://github.com/guim31/gladys-panasonic-cc/issues).
 
-Six demo devices show up after installation: a weather station (real data
-from Open-Meteo), a switch, a dimmable light, a smart plug with power
-metering, a motion sensor and a camera.
+This integration is not affiliated with Panasonic.
 
-## Configuration
+## Compatible hardware
 
-1. Open the **Configuration** tab of the integration.
-2. Set the **latitude** and **longitude** the demo weather station should
-   observe (they default to Paris), and pick your temperature unit.
-   The **refresh interval** sets how often the weather station and the
-   plug's power are read: every 5 minutes by default, every minute at most.
-3. Save: the devices appear in the **Discovery** tab, ready to be added.
+Every Panasonic **air conditioner or air-to-air heat pump** (Etherea, TZ, Z, ducted and cassette units...) set up in the **Panasonic Comfort Cloud** app, with its Wi-Fi adapter (built in, or CZ-TACG1 / CZ-CAPWFC1). Each indoor unit becomes one Gladys device.
 
-The **Prefer the local connection** toggle drives the demo plug: it reports
-the channel it actually uses as a badge (local or cloud), with an orange dot
-when it runs degraded (local refused, cloud fallback).
+Not supported: the Aquarea air-to-water heat pumps and the hot water tanks, even when they appear in the same app (the search counts them as "not supported").
 
-## Actions
+## Requirements
 
-- **Test the weather provider** — performs a live request to Open-Meteo and
-  shows the current temperature and humidity under the button.
-- **Identify a device** — pick one of your devices in the list and it will
-  signal itself (the demo light "blinks" in the logs).
+- Gladys **5.2.0** or later.
+- A **Panasonic ID** (e-mail and password) with the units in its Comfort Cloud app.
+- Internet access for Gladys: everything goes through the Panasonic cloud, nothing is local.
+- If your account uses two-factor authentication, your authenticator app at hand for the first sign-in.
 
-## Scenes
+## Installation and configuration
 
-The integration adds its own cards to the scene editor (Gladys 5.1 or
-later), under the **Integrations** category:
+1. In Gladys, open **Integrations → Install from GitHub** and enter `https://github.com/guim31/gladys-panasonic-cc`.
+2. Open the integration's **Configuration** tab. The settings:
+   - **Panasonic ID (e-mail)** and **Password**: those of the Comfort Cloud app. Tip: Panasonic lets you share the units with a second account in the app; a dedicated account for Gladys keeps your own sessions apart.
+   - **Refresh interval**: how often each unit is read (2 minutes by default, like the Home Assistant integration).
+   - **Language of the feature names**: language of the feature names of the new devices (French by default). The devices themselves keep the names given in the app.
+   - **Advanced**, **Comfort Cloud app version**: leave empty. Panasonic only answers recent versions of its app; the integration reads the current one from Google Play by itself. Fill it in only if the connection status says the version is refused.
+3. Open the **Discovery** tab: every indoor unit of the account appears under its name in the app. Add the ones you want to Gladys.
 
-- **Motion detected** (trigger) — starts the scene when a demo motion sensor
-  sees something move. Optionally pick the sensor and what moved (person,
-  animal); left empty, any detection matches. The following actions can
-  read what moved with `{{triggerEvent.data.target}}`.
-- **Identify a device** (action) — makes the chosen device signal itself.
-  It returns whether the device could signal itself, so the following
-  actions can depend on it.
+The **Search for air conditioners** button (Configuration tab) reads the account again and lists every unit, its model and whether it answers.
 
-## Dashboard
+### Two-factor authentication
 
-Add the **Demo status** widget to a dashboard: it shows the live
-temperature of the weather station and the power of the office plug, the
-connection the plug currently uses (orange when degraded) and the observed
-location. Its **Identify the light** button makes the demo light signal
-itself.
+If Panasonic asks for a code, the connection status says so. Open the authenticator app, then run **Sign in with a 2FA code** (Configuration tab) with the 6-digit code shown, within 30 seconds. The session is then kept in Gladys: the code is only needed again if Panasonic asks for a new sign-in.
+
+### What is stored
+
+The integration keeps in its own volume (`/data`, readable by the container only) the Comfort Cloud session (access and refresh tokens), the app version and the energy counter of each unit. The password stays in the Gladys configuration and is only sent to Panasonic when the session cannot be renewed. Neither the password nor the tokens are ever written in the logs.
+
+## Devices and features
+
+Each indoor unit is one Gladys device. Its features depend on what the unit announces:
+
+| Feature                                  | What it does                                                                                                                      |
+| ---------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| **On/off**                               | Turns the unit on or off.                                                                                                         |
+| **Mode**                                 | Auto, Cool, Heat, Dry, Fan (only the modes the unit has). Choosing a mode turns the unit on.                                      |
+| **Target temperature**                   | The setpoint, by half degrees, from 16 to 30 °C (from 8 °C on the units with the 8/15 °C frost protection).                       |
+| **Fan speed**                            | Auto, Low, Low-Med, Medium, Med-High, High.                                                                                       |
+| **Vertical swing**, **Horizontal swing** | Swing (Panasonic's "Auto"), or one of five fixed positions; the horizontal one only on the units with a left/right louver.        |
+| **Indoor temperature**                   | The temperature measured by the indoor unit.                                                                                      |
+| **Outdoor temperature**                  | The temperature measured by the outdoor unit, when it reports one.                                                                |
+| **Powerful mode**, **Quiet mode**        | Panasonic's special modes; they exclude each other. Only on the units that have them.                                             |
+| **nanoe**, **ECONAVI**, **AI Eco**       | The air purification and the eco sensors of the units that have them.                                                             |
+| **Energy today**                         | What the unit consumed today (kWh), from the Comfort Cloud history.                                                               |
+| **Energy consumed**                      | A counter (kWh) that only goes up, built from the daily history, for Gladys' energy monitoring. It starts with the current month. |
+
+A setpoint, louver position or special mode asked while the unit is **off** does not turn it on: it is shown at once, kept, and sent with the next power-on (like the reference client without automatic power-on). A scene preparing the night setpoint therefore never starts the unit by surprise. The fan speed, nanoe, ECONAVI and AI Eco are sent at once.
+
+The changes made with the remote or the app are picked up at the next reading.
+
+## Widget
+
+The **Air conditioner** widget (choose the unit in its settings) shows the room temperature, the setpoint and the outdoor temperature (or the energy of the day), then the mode, the fan speed, the special mode and the energy of the day. Its buttons:
+
+- **Turn on** / **Turn off**;
+- **−0.5 °C** and **+0.5 °C**;
+- **Mode and fan**: a small form to choose the mode, the fan speed and the special mode together, sent in one call; the unit is switched on.
+
+## Scene trigger
+
+- **Panasonic sign-in needed**: Comfort Cloud no longer accepts the session. The reason is available to the scene as a variable (`reason`): `password` (password refused), `two_factor` (a code is needed) or `terms` (new terms of use to accept in the app). It fires once per problem, not at every attempt: useful to send yourself a message rather than discover days later that the air conditioning no longer answers.
+
+## Scene action
+
+- **Apply an air conditioning preset**: turns the unit on with its mode, setpoint, fan speed and special mode in **one** Comfort Cloud call, where the standard Gladys actions would send one call per feature (each takes several seconds). An empty field keeps the current setting. The setpoint accepts half degrees (`22,5` or `22.5`). The setpoint applied is returned to the scene.
+
+Turning the unit off, or changing a single setting, uses the standard "Control a device" action of Gladys.
+
+## Scene examples
+
+- **Warm the living room before waking up**: at 6:30 am on weekdays, "Apply an air conditioning preset" in Heat at 21 °C, fan Auto, special mode Normal.
+- **Cool the bedroom quietly**: at 10 pm, if the bedroom is above 26 °C, "Apply an air conditioning preset" in Cool at 25 °C, fan Low, special mode Quiet.
+- **Nobody home**: when the last person leaves, turn off every air conditioner.
+- **Sign-in alert**: on "Panasonic sign-in needed", send a message "Panasonic needs attention: {{triggerEvent.data.reason}}".
+
+## Refresh and quotas
+
+- Panasonic publishes no quota, but Comfort Cloud is slow (a reading takes a few seconds) and throttles accounts that call it too often. The integration therefore makes **one call at a time**, reads only the units added to Gladys, every 2 minutes by default (the pace of the Home Assistant integration), and the energy history at most every 5 minutes.
+- The integration reads the units itself; Gladys' own polling is only a fallback.
+- After a command, the unit is read again 3 seconds later to confirm the state.
+- When Comfort Cloud fails, the pace slows down (up to 10 minutes) until it answers again. A unit the cloud cannot reach is read from the cloud's last copy for a while, then marked as not answering.
+- The unit list is read again every 30 minutes (new or renamed units).
+- Only the values that changed are sent to Gladys, plus a reminder every 6 hours so that a stable value never looks stale.
 
 ## Troubleshooting
 
-The integration logs everything it does: check the integration logs from the
-Gladys UI (or `docker logs` on the host) with `LOG_LEVEL=debug` for the full
-detail.
+- **"Panasonic refuses this e-mail address or password"**: check that you can sign in to the Comfort Cloud app with them, then fix them in the configuration. The integration never retries a refused password by itself (that could lock the account): saving the configuration or running **Search for air conditioners** tries again.
+- **"Panasonic asks for a two-factor code"**: run **Sign in with a 2FA code** with a fresh code.
+- **"Panasonic has new terms of use"**: open the Comfort Cloud app and accept them; the integration tries again every 30 minutes.
+- **"Comfort Cloud refuses the app version announced"**: look up the version of the Comfort Cloud app in its store and enter it in **Comfort Cloud app version**.
+- **A unit does not answer**: check it in the app; the Wi-Fi adapter may have lost its connection.
+- **More details**: set the `LOG_LEVEL` environment variable of the container to `debug`.
+
+## Limits
+
+- Developed without the hardware: feedback welcome on [GitHub](https://github.com/guim31/gladys-panasonic-cc/issues).
+- Cloud only: no local control, and the integration stops working if Panasonic changes its sign-in or its API until it is updated.
+- The energy values come from the Comfort Cloud history, which lags behind by up to an hour or so; units without energy measurement have no energy features.
+- Not handled: the iAuto-X mode, the 8/15 °C frost protection preset (the setpoint range allows it), the weekly timers, the zones of ducted units, the inside cleaning.
+- Aquarea heat pumps and hot water tanks are not supported.
