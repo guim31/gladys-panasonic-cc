@@ -1,0 +1,1450 @@
+{
+  "apiKey": [
+    {
+      "timestamp": "2026-10-14 08:30:00",
+      "token": "eyJhbGciOiJSUzI1NiJ9.eyJleHAiOjE4MDAwMDAwMDB9.c2ln",
+      "key": "33da8b1b9cfcf2af3ace6f294bfb12b7b6537a20655995d6a9ac54786f3f6285845"
+    },
+    {
+      "timestamp": "2026-10-14 08:30:00",
+      "token": "token-two",
+      "key": "5d55591c6cfc7a5706c223d755a71013d4ff6cfc38d6b68dbc764021c177ad23ee0"
+    },
+    {
+      "timestamp": "2026-10-14 08:30:00",
+      "token": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "key": "470d8ce61cfcad8beb46829b6ac380bad93cb55c45d77262060851e2a7c92dbff81"
+    },
+    {
+      "timestamp": "2024-02-29 23:59:59",
+      "token": "eyJhbGciOiJSUzI1NiJ9.eyJleHAiOjE4MDAwMDAwMDB9.c2ln",
+      "key": "5915efe65cfca9e02eb2aff027d867f9b39737c2d63b9ef59b20486847c9d7abe3b"
+    },
+    {
+      "timestamp": "2024-02-29 23:59:59",
+      "token": "token-two",
+      "key": "c42ca31c3cfcceca86619ef62f1d799521bb0728b8d1cf87f5beca02cb46043130e"
+    },
+    {
+      "timestamp": "2024-02-29 23:59:59",
+      "token": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "key": "4169d398bcfc27c36a5c5ad6dbfb9b9805d2e2e75cd9b167e75bf1dff59f8c6be06"
+    },
+    {
+      "timestamp": "2026-01-01 00:00:00",
+      "token": "eyJhbGciOiJSUzI1NiJ9.eyJleHAiOjE4MDAwMDAwMDB9.c2ln",
+      "key": "2396e522dcfc3c96071fa29853f8ee1d5cec5b9125de47537d047f119f1dc6284f3"
+    },
+    {
+      "timestamp": "2026-01-01 00:00:00",
+      "token": "token-two",
+      "key": "ec1aa2c16cfcff6478641c9d97f8f6b529ee26dd432d3ba27ef5c0ce5ece0e3c2c8"
+    },
+    {
+      "timestamp": "2026-01-01 00:00:00",
+      "token": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "key": "e0c636325cfc79ee1eb86bd44e0691bbbd1bb498a1945be67daf439145e05d68a94"
+    }
+  ],
+  "pkce": [
+    {
+      "verifier": "dBjftJeZ4CVPmB92K27uhbUJU1p1r_wW1gFWFOEjXk0",
+      "challenge": "G3JB3YzdwbK-gMpLsv4uNMyXuhjZhAt4hFoGMt86mc0"
+    },
+    {
+      "verifier": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "challenge": "DwBzhbb51LfusnSGBa_hqYSgo7-j8BTQnip4TOnlzRo"
+    },
+    {
+      "verifier": "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFG",
+      "challenge": "fR4ifSAEy-7Mu6g7FHZulPKrtjqdAnUCwRFAJt2JFsA"
+    }
+  ],
+  "guardian": {
+    "html": "<html><head><title>Panasonic Digital Platform - MFA Standard</title></head><body>\n<script>\n  window.__g_config = {\n    // the hosted MFA widget\n    postActionURL: \"https://authglb.digital.panasonic.com/login/callback?state=abc\\u0026x=1\",\n    serviceUrl: \"https://example-mfa.guardian.auth0.com\",\n    requestToken: \"req.tok.en\",\n    stateCheckingMechanism: \"polling\",\n    theme: { icon: \"\" }\n  };\n</script></body></html>",
+    "config": {
+      "postActionURL": "https://authglb.digital.panasonic.com/login/callback?state=abc\\u0026x=1",
+      "serviceUrl": "https://example-mfa.guardian.auth0.com",
+      "requestToken": "req.tok.en",
+      "stateCheckingMechanism": "polling"
+    },
+    "none": null
+  },
+  "hiddenInputs": {
+    "html": "<form method=\"post\" name=\"hiddenform\" action=\"https://authglb.digital.panasonic.com/login/callback\">\n<input type=\"hidden\" name=\"wa\" value=\"wsignin1.0\">\n<input type=\"hidden\"\n       name=\"wresult\"\n       value=\"eyJ0eXAi.eyJzdWIi.c2ln&amp;more\">\n<input name=\"wctx\" type=\"hidden\" value='{&#34;strategy&#34;:&#34;auth0&#34;,&#34;state&#34;:&#34;s1&#34;}'>\n<input type=\"text\" name=\"visible\" value=\"no\">\n<noscript><p>Script is disabled. Click Submit to continue.</p><input type=\"submit\" value=\"Submit\"></noscript>\n</form>",
+    "parameters": {
+      "wa": "wsignin1.0",
+      "wresult": "eyJ0eXAi.eyJzdWIi.c2ln&more",
+      "wctx": "{\"strategy\":\"auth0\",\"state\":\"s1\"}"
+    }
+  },
+  "devices": {
+    "real": {
+      "deviceType": "3",
+      "status": {
+        "timestamp": 1727898629466,
+        "permission": 3,
+        "summerHouse": 2,
+        "iAutoX": false,
+        "nanoe": false,
+        "nanoeStandAlone": false,
+        "autoMode": true,
+        "heatMode": true,
+        "fanMode": true,
+        "dryMode": true,
+        "coolMode": true,
+        "ecoNavi": false,
+        "powerfulMode": true,
+        "quietMode": true,
+        "airSwingLR": true,
+        "autoSwingUD": false,
+        "ecoFunction": 0,
+        "temperatureUnit": 0,
+        "modeAvlList": {
+          "autoMode": 1
+        },
+        "nanoeList": {
+          "visualizationShow": 0
+        },
+        "clothesDrying": false,
+        "insideCleaning": false,
+        "fireplace": false,
+        "pairedFlg": false,
+        "parameters": {
+          "ecoFunctionData": 0,
+          "insideCleaning": 0,
+          "fireplace": 0,
+          "lastSettingMode": 0,
+          "operate": 1,
+          "operationMode": 0,
+          "temperatureSet": 22.5,
+          "fanSpeed": 0,
+          "fanAutoMode": 0,
+          "airSwingLR": 2,
+          "airSwingUD": 2,
+          "ecoMode": 2,
+          "ecoNavi": 0,
+          "nanoe": 0,
+          "iAuto": 0,
+          "airDirection": 1,
+          "insideTemperature": 21,
+          "outTemperature": 5,
+          "airQuality": 0
+        }
+      },
+      "parsed": {
+        "power": 1,
+        "mode": 0,
+        "fanSpeed": 0,
+        "targetTemperature": 22.5,
+        "insideTemperature": 21,
+        "outsideTemperature": 5,
+        "verticalSwing": -1,
+        "horizontalSwing": -1,
+        "ecoMode": 2,
+        "nanoe": 0,
+        "ecoNavi": 0,
+        "ecoFunction": 0,
+        "hasNanoe": false,
+        "hasEcoNavi": false,
+        "hasEcoFunction": false,
+        "hasHorizontalSwing": false,
+        "hasInside": true,
+        "hasOutside": true,
+        "features": {
+          "auto": true,
+          "cool": true,
+          "heat": true,
+          "dry": true,
+          "fan": true,
+          "powerful": true,
+          "quiet": true,
+          "summerHouse": 2,
+          "autoSwingUD": false
+        }
+      }
+    },
+    "heat-fixed": {
+      "deviceType": "3",
+      "status": {
+        "timestamp": 1727898629466,
+        "permission": 3,
+        "summerHouse": 2,
+        "iAutoX": false,
+        "nanoe": false,
+        "nanoeStandAlone": false,
+        "autoMode": true,
+        "heatMode": true,
+        "fanMode": true,
+        "dryMode": true,
+        "coolMode": true,
+        "ecoNavi": false,
+        "powerfulMode": true,
+        "quietMode": true,
+        "airSwingLR": true,
+        "autoSwingUD": false,
+        "ecoFunction": 0,
+        "temperatureUnit": 0,
+        "modeAvlList": {
+          "autoMode": 1
+        },
+        "nanoeList": {
+          "visualizationShow": 0
+        },
+        "clothesDrying": false,
+        "insideCleaning": false,
+        "fireplace": false,
+        "pairedFlg": false,
+        "parameters": {
+          "ecoFunctionData": 0,
+          "insideCleaning": 0,
+          "fireplace": 0,
+          "lastSettingMode": 0,
+          "operate": 0,
+          "operationMode": 3,
+          "temperatureSet": 23,
+          "fanSpeed": 0,
+          "fanAutoMode": 1,
+          "airSwingLR": 5,
+          "airSwingUD": 4,
+          "ecoMode": 1,
+          "ecoNavi": 0,
+          "nanoe": 0,
+          "iAuto": 0,
+          "airDirection": 1,
+          "insideTemperature": 19.5,
+          "outTemperature": 126,
+          "airQuality": 0
+        }
+      },
+      "parsed": {
+        "power": 0,
+        "mode": 3,
+        "fanSpeed": 0,
+        "targetTemperature": 23,
+        "insideTemperature": 19.5,
+        "outsideTemperature": null,
+        "verticalSwing": 4,
+        "horizontalSwing": 5,
+        "ecoMode": 1,
+        "nanoe": 0,
+        "ecoNavi": 0,
+        "ecoFunction": 0,
+        "hasNanoe": false,
+        "hasEcoNavi": false,
+        "hasEcoFunction": false,
+        "hasHorizontalSwing": false,
+        "hasInside": true,
+        "hasOutside": false,
+        "features": {
+          "auto": true,
+          "cool": true,
+          "heat": true,
+          "dry": true,
+          "fan": true,
+          "powerful": true,
+          "quiet": true,
+          "summerHouse": 2,
+          "autoSwingUD": false
+        }
+      }
+    },
+    "cool-nanoe": {
+      "deviceType": "1",
+      "status": {
+        "timestamp": 1727898629466,
+        "permission": 3,
+        "summerHouse": 2,
+        "iAutoX": false,
+        "nanoe": true,
+        "nanoeStandAlone": false,
+        "autoMode": true,
+        "heatMode": true,
+        "fanMode": true,
+        "dryMode": true,
+        "coolMode": true,
+        "ecoNavi": true,
+        "powerfulMode": true,
+        "quietMode": true,
+        "airSwingLR": true,
+        "autoSwingUD": false,
+        "ecoFunction": 1,
+        "temperatureUnit": 0,
+        "modeAvlList": {
+          "autoMode": 1
+        },
+        "nanoeList": {
+          "visualizationShow": 0
+        },
+        "clothesDrying": false,
+        "insideCleaning": false,
+        "fireplace": false,
+        "pairedFlg": false,
+        "parameters": {
+          "ecoFunctionData": 2,
+          "insideCleaning": 0,
+          "fireplace": 0,
+          "lastSettingMode": 0,
+          "operate": 1,
+          "operationMode": 2,
+          "temperatureSet": 22.5,
+          "fanSpeed": 4,
+          "fanAutoMode": 2,
+          "airSwingLR": 0,
+          "airSwingUD": 0,
+          "ecoMode": 2,
+          "ecoNavi": 1,
+          "nanoe": 2,
+          "iAuto": 0,
+          "airDirection": 0,
+          "insideTemperature": 21,
+          "outTemperature": 5,
+          "airQuality": 0
+        }
+      },
+      "parsed": {
+        "power": 1,
+        "mode": 2,
+        "fanSpeed": 4,
+        "targetTemperature": 22.5,
+        "insideTemperature": 21,
+        "outsideTemperature": 5,
+        "verticalSwing": -1,
+        "horizontalSwing": 0,
+        "ecoMode": 2,
+        "nanoe": 2,
+        "ecoNavi": 1,
+        "ecoFunction": 2,
+        "hasNanoe": true,
+        "hasEcoNavi": true,
+        "hasEcoFunction": true,
+        "hasHorizontalSwing": true,
+        "hasInside": true,
+        "hasOutside": true,
+        "features": {
+          "auto": true,
+          "cool": true,
+          "heat": true,
+          "dry": true,
+          "fan": true,
+          "powerful": true,
+          "quiet": true,
+          "summerHouse": 2,
+          "autoSwingUD": false
+        }
+      }
+    },
+    "lr-auto-direction3": {
+      "deviceType": "1",
+      "status": {
+        "timestamp": 1727898629466,
+        "permission": 3,
+        "summerHouse": 2,
+        "iAutoX": false,
+        "nanoe": false,
+        "nanoeStandAlone": false,
+        "autoMode": true,
+        "heatMode": true,
+        "fanMode": true,
+        "dryMode": true,
+        "coolMode": true,
+        "ecoNavi": false,
+        "powerfulMode": true,
+        "quietMode": true,
+        "airSwingLR": true,
+        "autoSwingUD": false,
+        "ecoFunction": 0,
+        "temperatureUnit": 0,
+        "modeAvlList": {
+          "autoMode": 1
+        },
+        "nanoeList": {
+          "visualizationShow": 0
+        },
+        "clothesDrying": false,
+        "insideCleaning": false,
+        "fireplace": false,
+        "pairedFlg": false,
+        "parameters": {
+          "ecoFunctionData": 0,
+          "insideCleaning": 0,
+          "fireplace": 0,
+          "lastSettingMode": 0,
+          "operate": 1,
+          "operationMode": 0,
+          "temperatureSet": 22.5,
+          "fanSpeed": 0,
+          "fanAutoMode": 3,
+          "airSwingLR": 1,
+          "airSwingUD": 1,
+          "ecoMode": 2,
+          "ecoNavi": 0,
+          "nanoe": 0,
+          "iAuto": 0,
+          "airDirection": 3,
+          "insideTemperature": 21,
+          "outTemperature": 5,
+          "airQuality": 0
+        }
+      },
+      "parsed": {
+        "power": 1,
+        "mode": 0,
+        "fanSpeed": 0,
+        "targetTemperature": 22.5,
+        "insideTemperature": 21,
+        "outsideTemperature": 5,
+        "verticalSwing": 1,
+        "horizontalSwing": -1,
+        "ecoMode": 2,
+        "nanoe": 0,
+        "ecoNavi": 0,
+        "ecoFunction": 0,
+        "hasNanoe": false,
+        "hasEcoNavi": false,
+        "hasEcoFunction": false,
+        "hasHorizontalSwing": false,
+        "hasInside": true,
+        "hasOutside": true,
+        "features": {
+          "auto": true,
+          "cool": true,
+          "heat": true,
+          "dry": true,
+          "fan": true,
+          "powerful": true,
+          "quiet": true,
+          "summerHouse": 2,
+          "autoSwingUD": false
+        }
+      }
+    },
+    "no-lr": {
+      "deviceType": "1",
+      "status": {
+        "timestamp": 1727898629466,
+        "permission": 3,
+        "summerHouse": 2,
+        "iAutoX": false,
+        "nanoe": true,
+        "nanoeStandAlone": false,
+        "autoMode": true,
+        "heatMode": true,
+        "fanMode": true,
+        "dryMode": true,
+        "coolMode": true,
+        "ecoNavi": false,
+        "powerfulMode": true,
+        "quietMode": true,
+        "airSwingLR": false,
+        "autoSwingUD": false,
+        "ecoFunction": 0,
+        "temperatureUnit": 0,
+        "modeAvlList": {
+          "autoMode": 1
+        },
+        "nanoeList": {
+          "visualizationShow": 0
+        },
+        "clothesDrying": false,
+        "insideCleaning": false,
+        "fireplace": false,
+        "pairedFlg": false,
+        "parameters": {
+          "ecoFunctionData": 0,
+          "insideCleaning": 0,
+          "fireplace": 0,
+          "lastSettingMode": 0,
+          "operate": 1,
+          "operationMode": 0,
+          "temperatureSet": 22.5,
+          "fanSpeed": 0,
+          "fanAutoMode": 1,
+          "airSwingLR": 6,
+          "airSwingUD": 2,
+          "ecoMode": 2,
+          "ecoNavi": 0,
+          "nanoe": 3,
+          "iAuto": 0,
+          "airDirection": 1,
+          "insideTemperature": 21,
+          "outTemperature": 5,
+          "airQuality": 0
+        }
+      },
+      "parsed": {
+        "power": 1,
+        "mode": 0,
+        "fanSpeed": 0,
+        "targetTemperature": 22.5,
+        "insideTemperature": 21,
+        "outsideTemperature": 5,
+        "verticalSwing": 2,
+        "horizontalSwing": 6,
+        "ecoMode": 2,
+        "nanoe": 3,
+        "ecoNavi": 0,
+        "ecoFunction": 0,
+        "hasNanoe": true,
+        "hasEcoNavi": false,
+        "hasEcoFunction": false,
+        "hasHorizontalSwing": false,
+        "hasInside": true,
+        "hasOutside": true,
+        "features": {
+          "auto": true,
+          "cool": true,
+          "heat": true,
+          "dry": true,
+          "fan": true,
+          "powerful": true,
+          "quiet": true,
+          "summerHouse": 2,
+          "autoSwingUD": false
+        }
+      }
+    },
+    "ducted": {
+      "deviceType": "5",
+      "status": {
+        "timestamp": 1727898629466,
+        "permission": 3,
+        "summerHouse": 2,
+        "iAutoX": false,
+        "nanoe": false,
+        "nanoeStandAlone": false,
+        "autoMode": true,
+        "heatMode": true,
+        "fanMode": true,
+        "dryMode": true,
+        "coolMode": true,
+        "ecoNavi": false,
+        "powerfulMode": true,
+        "quietMode": true,
+        "airSwingLR": true,
+        "autoSwingUD": false,
+        "ecoFunction": 0,
+        "temperatureUnit": 0,
+        "modeAvlList": {
+          "autoMode": 1
+        },
+        "nanoeList": {
+          "visualizationShow": 0
+        },
+        "clothesDrying": false,
+        "insideCleaning": false,
+        "fireplace": false,
+        "pairedFlg": false,
+        "parameters": {
+          "ecoFunctionData": 0,
+          "insideCleaning": 0,
+          "fireplace": 0,
+          "lastSettingMode": 0,
+          "operate": 1,
+          "operationMode": 0,
+          "temperatureSet": 22.5,
+          "fanSpeed": 0,
+          "fanAutoMode": 0,
+          "airSwingLR": 2,
+          "airSwingUD": 2,
+          "ecoMode": 2,
+          "ecoNavi": 0,
+          "nanoe": 0,
+          "iAuto": 0,
+          "airDirection": 0,
+          "insideTemperature": 21,
+          "outTemperature": 5,
+          "airQuality": 0
+        }
+      },
+      "parsed": {
+        "power": 1,
+        "mode": 0,
+        "fanSpeed": 0,
+        "targetTemperature": 22.5,
+        "insideTemperature": 21,
+        "outsideTemperature": 5,
+        "verticalSwing": -1,
+        "horizontalSwing": -1,
+        "ecoMode": 2,
+        "nanoe": 0,
+        "ecoNavi": 0,
+        "ecoFunction": 0,
+        "hasNanoe": false,
+        "hasEcoNavi": false,
+        "hasEcoFunction": false,
+        "hasHorizontalSwing": false,
+        "hasInside": true,
+        "hasOutside": true,
+        "features": {
+          "auto": true,
+          "cool": true,
+          "heat": true,
+          "dry": true,
+          "fan": true,
+          "powerful": true,
+          "quiet": true,
+          "summerHouse": 2,
+          "autoSwingUD": false
+        }
+      }
+    },
+    "ud-swing5": {
+      "deviceType": "1",
+      "status": {
+        "timestamp": 1727898629466,
+        "permission": 3,
+        "summerHouse": 2,
+        "iAutoX": false,
+        "nanoe": false,
+        "nanoeStandAlone": false,
+        "autoMode": true,
+        "heatMode": true,
+        "fanMode": true,
+        "dryMode": true,
+        "coolMode": true,
+        "ecoNavi": false,
+        "powerfulMode": true,
+        "quietMode": true,
+        "airSwingLR": true,
+        "autoSwingUD": true,
+        "ecoFunction": 0,
+        "temperatureUnit": 0,
+        "modeAvlList": {
+          "autoMode": 1
+        },
+        "nanoeList": {
+          "visualizationShow": 0
+        },
+        "clothesDrying": false,
+        "insideCleaning": false,
+        "fireplace": false,
+        "pairedFlg": false,
+        "parameters": {
+          "ecoFunctionData": 0,
+          "insideCleaning": 0,
+          "fireplace": 0,
+          "lastSettingMode": 0,
+          "operate": 1,
+          "operationMode": 0,
+          "temperatureSet": 22.5,
+          "fanSpeed": 0,
+          "fanAutoMode": 1,
+          "airSwingLR": 2,
+          "airSwingUD": 5,
+          "ecoMode": 2,
+          "ecoNavi": 0,
+          "nanoe": 0,
+          "iAuto": 0,
+          "airDirection": 1,
+          "insideTemperature": 126,
+          "outTemperature": 5,
+          "airQuality": 0
+        }
+      },
+      "parsed": {
+        "power": 1,
+        "mode": 0,
+        "fanSpeed": 0,
+        "targetTemperature": 22.5,
+        "insideTemperature": null,
+        "outsideTemperature": 5,
+        "verticalSwing": 5,
+        "horizontalSwing": 2,
+        "ecoMode": 2,
+        "nanoe": 0,
+        "ecoNavi": 0,
+        "ecoFunction": 0,
+        "hasNanoe": false,
+        "hasEcoNavi": false,
+        "hasEcoFunction": false,
+        "hasHorizontalSwing": false,
+        "hasInside": false,
+        "hasOutside": true,
+        "features": {
+          "auto": true,
+          "cool": true,
+          "heat": true,
+          "dry": true,
+          "fan": true,
+          "powerful": true,
+          "quiet": true,
+          "summerHouse": 2,
+          "autoSwingUD": true
+        }
+      }
+    }
+  },
+  "changeRequests": [
+    {
+      "device": "real",
+      "op": "vertical",
+      "value": -1,
+      "request": {
+        "fanAutoMode": 0
+      }
+    },
+    {
+      "device": "real",
+      "op": "vertical",
+      "value": 0,
+      "request": {
+        "airSwingUD": 0,
+        "fanAutoMode": 3
+      }
+    },
+    {
+      "device": "real",
+      "op": "vertical",
+      "value": 3,
+      "request": {
+        "airSwingUD": 3,
+        "fanAutoMode": 3
+      }
+    },
+    {
+      "device": "real",
+      "op": "vertical",
+      "value": 2,
+      "request": {
+        "airSwingUD": 2,
+        "fanAutoMode": 3
+      }
+    },
+    {
+      "device": "real",
+      "op": "vertical",
+      "value": 4,
+      "request": {
+        "airSwingUD": 4,
+        "fanAutoMode": 3
+      }
+    },
+    {
+      "device": "real",
+      "op": "vertical",
+      "value": 1,
+      "request": {
+        "airSwingUD": 1,
+        "fanAutoMode": 3
+      }
+    },
+    {
+      "device": "real",
+      "op": "vertical",
+      "value": 5,
+      "request": {
+        "airSwingUD": 5,
+        "fanAutoMode": 3
+      }
+    },
+    {
+      "device": "real",
+      "op": "horizontal",
+      "value": -1,
+      "request": {
+        "fanAutoMode": 0
+      }
+    },
+    {
+      "device": "real",
+      "op": "horizontal",
+      "value": 1,
+      "request": {
+        "airSwingLR": 1,
+        "fanAutoMode": 2
+      }
+    },
+    {
+      "device": "real",
+      "op": "horizontal",
+      "value": 5,
+      "request": {
+        "airSwingLR": 5,
+        "fanAutoMode": 2
+      }
+    },
+    {
+      "device": "real",
+      "op": "horizontal",
+      "value": 2,
+      "request": {
+        "airSwingLR": 2,
+        "fanAutoMode": 2
+      }
+    },
+    {
+      "device": "real",
+      "op": "horizontal",
+      "value": 4,
+      "request": {
+        "airSwingLR": 4,
+        "fanAutoMode": 2
+      }
+    },
+    {
+      "device": "real",
+      "op": "horizontal",
+      "value": 0,
+      "request": {
+        "airSwingLR": 0,
+        "fanAutoMode": 2
+      }
+    },
+    {
+      "device": "real",
+      "op": "mode",
+      "value": 0,
+      "request": {
+        "operationMode": 0
+      }
+    },
+    {
+      "device": "real",
+      "op": "mode",
+      "value": 1,
+      "request": {
+        "operationMode": 1
+      }
+    },
+    {
+      "device": "real",
+      "op": "mode",
+      "value": 2,
+      "request": {
+        "operationMode": 2
+      }
+    },
+    {
+      "device": "real",
+      "op": "mode",
+      "value": 3,
+      "request": {
+        "operationMode": 3
+      }
+    },
+    {
+      "device": "real",
+      "op": "mode",
+      "value": 4,
+      "request": {
+        "operationMode": 4
+      }
+    },
+    {
+      "device": "real",
+      "op": "temperature",
+      "value": 21.5,
+      "request": {
+        "temperatureSet": 21.5
+      }
+    },
+    {
+      "device": "real",
+      "op": "eco",
+      "value": 0,
+      "request": {
+        "ecoMode": 0
+      }
+    },
+    {
+      "device": "real",
+      "op": "eco",
+      "value": 1,
+      "request": {
+        "ecoMode": 1
+      }
+    },
+    {
+      "device": "real",
+      "op": "eco",
+      "value": 2,
+      "request": {
+        "ecoMode": 2
+      }
+    },
+    {
+      "device": "heat-fixed",
+      "op": "vertical",
+      "value": -1,
+      "request": {
+        "operate": 1,
+        "fanAutoMode": 2
+      }
+    },
+    {
+      "device": "heat-fixed",
+      "op": "vertical",
+      "value": 0,
+      "request": {
+        "operate": 1,
+        "airSwingUD": 0,
+        "fanAutoMode": 1
+      }
+    },
+    {
+      "device": "heat-fixed",
+      "op": "vertical",
+      "value": 3,
+      "request": {
+        "operate": 1,
+        "airSwingUD": 3,
+        "fanAutoMode": 1
+      }
+    },
+    {
+      "device": "heat-fixed",
+      "op": "vertical",
+      "value": 2,
+      "request": {
+        "operate": 1,
+        "airSwingUD": 2,
+        "fanAutoMode": 1
+      }
+    },
+    {
+      "device": "heat-fixed",
+      "op": "vertical",
+      "value": 4,
+      "request": {
+        "operate": 1,
+        "airSwingUD": 4,
+        "fanAutoMode": 1
+      }
+    },
+    {
+      "device": "heat-fixed",
+      "op": "vertical",
+      "value": 1,
+      "request": {
+        "operate": 1,
+        "airSwingUD": 1,
+        "fanAutoMode": 1
+      }
+    },
+    {
+      "device": "heat-fixed",
+      "op": "vertical",
+      "value": 5,
+      "request": {
+        "operate": 1,
+        "airSwingUD": 5,
+        "fanAutoMode": 1
+      }
+    },
+    {
+      "device": "heat-fixed",
+      "op": "horizontal",
+      "value": -1,
+      "request": {
+        "operate": 1,
+        "fanAutoMode": 3
+      }
+    },
+    {
+      "device": "heat-fixed",
+      "op": "horizontal",
+      "value": 1,
+      "request": {
+        "operate": 1,
+        "airSwingLR": 1,
+        "fanAutoMode": 1
+      }
+    },
+    {
+      "device": "heat-fixed",
+      "op": "horizontal",
+      "value": 5,
+      "request": {
+        "operate": 1,
+        "airSwingLR": 5,
+        "fanAutoMode": 1
+      }
+    },
+    {
+      "device": "heat-fixed",
+      "op": "horizontal",
+      "value": 2,
+      "request": {
+        "operate": 1,
+        "airSwingLR": 2,
+        "fanAutoMode": 1
+      }
+    },
+    {
+      "device": "heat-fixed",
+      "op": "horizontal",
+      "value": 4,
+      "request": {
+        "operate": 1,
+        "airSwingLR": 4,
+        "fanAutoMode": 1
+      }
+    },
+    {
+      "device": "heat-fixed",
+      "op": "horizontal",
+      "value": 0,
+      "request": {
+        "operate": 1,
+        "airSwingLR": 0,
+        "fanAutoMode": 1
+      }
+    },
+    {
+      "device": "heat-fixed",
+      "op": "mode",
+      "value": 0,
+      "request": {
+        "operate": 1,
+        "operationMode": 0
+      }
+    },
+    {
+      "device": "heat-fixed",
+      "op": "mode",
+      "value": 1,
+      "request": {
+        "operate": 1,
+        "operationMode": 1
+      }
+    },
+    {
+      "device": "heat-fixed",
+      "op": "mode",
+      "value": 2,
+      "request": {
+        "operate": 1,
+        "operationMode": 2
+      }
+    },
+    {
+      "device": "heat-fixed",
+      "op": "mode",
+      "value": 3,
+      "request": {
+        "operate": 1,
+        "operationMode": 3
+      }
+    },
+    {
+      "device": "heat-fixed",
+      "op": "mode",
+      "value": 4,
+      "request": {
+        "operate": 1,
+        "operationMode": 4
+      }
+    },
+    {
+      "device": "heat-fixed",
+      "op": "temperature",
+      "value": 21.5,
+      "request": {
+        "operate": 1,
+        "temperatureSet": 21.5
+      }
+    },
+    {
+      "device": "heat-fixed",
+      "op": "eco",
+      "value": 0,
+      "request": {
+        "operate": 1,
+        "ecoMode": 0
+      }
+    },
+    {
+      "device": "heat-fixed",
+      "op": "eco",
+      "value": 1,
+      "request": {
+        "operate": 1,
+        "ecoMode": 1
+      }
+    },
+    {
+      "device": "heat-fixed",
+      "op": "eco",
+      "value": 2,
+      "request": {
+        "operate": 1,
+        "ecoMode": 2
+      }
+    },
+    {
+      "device": "cool-nanoe",
+      "op": "vertical",
+      "value": -1,
+      "request": {
+        "fanAutoMode": 2
+      }
+    },
+    {
+      "device": "cool-nanoe",
+      "op": "vertical",
+      "value": 0,
+      "request": {
+        "airSwingUD": 0,
+        "fanAutoMode": 1
+      }
+    },
+    {
+      "device": "cool-nanoe",
+      "op": "vertical",
+      "value": 3,
+      "request": {
+        "airSwingUD": 3,
+        "fanAutoMode": 1
+      }
+    },
+    {
+      "device": "cool-nanoe",
+      "op": "vertical",
+      "value": 2,
+      "request": {
+        "airSwingUD": 2,
+        "fanAutoMode": 1
+      }
+    },
+    {
+      "device": "cool-nanoe",
+      "op": "vertical",
+      "value": 4,
+      "request": {
+        "airSwingUD": 4,
+        "fanAutoMode": 1
+      }
+    },
+    {
+      "device": "cool-nanoe",
+      "op": "vertical",
+      "value": 1,
+      "request": {
+        "airSwingUD": 1,
+        "fanAutoMode": 1
+      }
+    },
+    {
+      "device": "cool-nanoe",
+      "op": "vertical",
+      "value": 5,
+      "request": {
+        "airSwingUD": 5,
+        "fanAutoMode": 1
+      }
+    },
+    {
+      "device": "cool-nanoe",
+      "op": "horizontal",
+      "value": -1,
+      "request": {
+        "fanAutoMode": 0
+      }
+    },
+    {
+      "device": "cool-nanoe",
+      "op": "horizontal",
+      "value": 1,
+      "request": {
+        "airSwingLR": 1,
+        "fanAutoMode": 2
+      }
+    },
+    {
+      "device": "cool-nanoe",
+      "op": "horizontal",
+      "value": 5,
+      "request": {
+        "airSwingLR": 5,
+        "fanAutoMode": 2
+      }
+    },
+    {
+      "device": "cool-nanoe",
+      "op": "horizontal",
+      "value": 2,
+      "request": {
+        "airSwingLR": 2,
+        "fanAutoMode": 2
+      }
+    },
+    {
+      "device": "cool-nanoe",
+      "op": "horizontal",
+      "value": 4,
+      "request": {
+        "airSwingLR": 4,
+        "fanAutoMode": 2
+      }
+    },
+    {
+      "device": "cool-nanoe",
+      "op": "horizontal",
+      "value": 0,
+      "request": {
+        "airSwingLR": 0,
+        "fanAutoMode": 2
+      }
+    },
+    {
+      "device": "cool-nanoe",
+      "op": "mode",
+      "value": 0,
+      "request": {
+        "operationMode": 0
+      }
+    },
+    {
+      "device": "cool-nanoe",
+      "op": "mode",
+      "value": 1,
+      "request": {
+        "operationMode": 1
+      }
+    },
+    {
+      "device": "cool-nanoe",
+      "op": "mode",
+      "value": 2,
+      "request": {
+        "operationMode": 2
+      }
+    },
+    {
+      "device": "cool-nanoe",
+      "op": "mode",
+      "value": 3,
+      "request": {
+        "operationMode": 3
+      }
+    },
+    {
+      "device": "cool-nanoe",
+      "op": "mode",
+      "value": 4,
+      "request": {
+        "operationMode": 4
+      }
+    },
+    {
+      "device": "cool-nanoe",
+      "op": "temperature",
+      "value": 21.5,
+      "request": {
+        "temperatureSet": 21.5
+      }
+    },
+    {
+      "device": "cool-nanoe",
+      "op": "eco",
+      "value": 0,
+      "request": {
+        "ecoMode": 0
+      }
+    },
+    {
+      "device": "cool-nanoe",
+      "op": "eco",
+      "value": 1,
+      "request": {
+        "ecoMode": 1
+      }
+    },
+    {
+      "device": "cool-nanoe",
+      "op": "eco",
+      "value": 2,
+      "request": {
+        "ecoMode": 2
+      }
+    },
+    {
+      "device": "lr-auto-direction3",
+      "op": "vertical",
+      "value": -1,
+      "request": {
+        "fanAutoMode": 0
+      }
+    },
+    {
+      "device": "lr-auto-direction3",
+      "op": "vertical",
+      "value": 0,
+      "request": {
+        "airSwingUD": 0,
+        "fanAutoMode": 3
+      }
+    },
+    {
+      "device": "lr-auto-direction3",
+      "op": "vertical",
+      "value": 3,
+      "request": {
+        "airSwingUD": 3,
+        "fanAutoMode": 3
+      }
+    },
+    {
+      "device": "lr-auto-direction3",
+      "op": "vertical",
+      "value": 2,
+      "request": {
+        "airSwingUD": 2,
+        "fanAutoMode": 3
+      }
+    },
+    {
+      "device": "lr-auto-direction3",
+      "op": "vertical",
+      "value": 4,
+      "request": {
+        "airSwingUD": 4,
+        "fanAutoMode": 3
+      }
+    },
+    {
+      "device": "lr-auto-direction3",
+      "op": "vertical",
+      "value": 1,
+      "request": {
+        "airSwingUD": 1,
+        "fanAutoMode": 3
+      }
+    },
+    {
+      "device": "lr-auto-direction3",
+      "op": "vertical",
+      "value": 5,
+      "request": {
+        "airSwingUD": 5,
+        "fanAutoMode": 3
+      }
+    },
+    {
+      "device": "lr-auto-direction3",
+      "op": "horizontal",
+      "value": -1,
+      "request": {
+        "fanAutoMode": 3
+      }
+    },
+    {
+      "device": "lr-auto-direction3",
+      "op": "horizontal",
+      "value": 1,
+      "request": {
+        "airSwingLR": 1,
+        "fanAutoMode": 1
+      }
+    },
+    {
+      "device": "lr-auto-direction3",
+      "op": "horizontal",
+      "value": 5,
+      "request": {
+        "airSwingLR": 5,
+        "fanAutoMode": 1
+      }
+    },
+    {
+      "device": "lr-auto-direction3",
+      "op": "horizontal",
+      "value": 2,
+      "request": {
+        "airSwingLR": 2,
+        "fanAutoMode": 1
+      }
+    },
+    {
+      "device": "lr-auto-direction3",
+      "op": "horizontal",
+      "value": 4,
+      "request": {
+        "airSwingLR": 4,
+        "fanAutoMode": 1
+      }
+    },
+    {
+      "device": "lr-auto-direction3",
+      "op": "horizontal",
+      "value": 0,
+      "request": {
+        "airSwingLR": 0,
+        "fanAutoMode": 1
+      }
+    },
+    {
+      "device": "lr-auto-direction3",
+      "op": "mode",
+      "value": 0,
+      "request": {
+        "operationMode": 0
+      }
+    },
+    {
+      "device": "lr-auto-direction3",
+      "op": "mode",
+      "value": 1,
+      "request": {
+        "operationMode": 1
+      }
+    },
+    {
+      "device": "lr-auto-direction3",
+      "op": "mode",
+      "value": 2,
+      "request": {
+        "operationMode": 2
+      }
+    },
+    {
+      "device": "lr-auto-direction3",
+      "op": "mode",
+      "value": 3,
+      "request": {
+        "operationMode": 3
+      }
+    },
+    {
+      "device": "lr-auto-direction3",
+      "op": "mode",
+      "value": 4,
+      "request": {
+        "operationMode": 4
+      }
+    },
+    {
+      "device": "lr-auto-direction3",
+      "op": "temperature",
+      "value": 21.5,
+      "request": {
+        "temperatureSet": 21.5
+      }
+    },
+    {
+      "device": "lr-auto-direction3",
+      "op": "eco",
+      "value": 0,
+      "request": {
+        "ecoMode": 0
+      }
+    },
+    {
+      "device": "lr-auto-direction3",
+      "op": "eco",
+      "value": 1,
+      "request": {
+        "ecoMode": 1
+      }
+    },
+    {
+      "device": "lr-auto-direction3",
+      "op": "eco",
+      "value": 2,
+      "request": {
+        "ecoMode": 2
+      }
+    }
+  ]
+}
