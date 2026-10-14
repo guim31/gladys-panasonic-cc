@@ -10,6 +10,8 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-10-14
+
 ### Added
 
 - Panasonic air conditioners and air-to-air heat pumps (Etherea, TZ, Z,
@@ -41,3 +43,6 @@ the notes of the version's GitHub Release.
   temperature, mode, fan, special mode and energy of the day, with on/off,
   setpoint and "Mode and fan" buttons.
 - Names, messages and documentation in English, French, German and Spanish.
+
+[Unreleased]: https://github.com/guim31/gladys-panasonic-cc/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/guim31/gladys-panasonic-cc/releases/tag/v1.0.1
